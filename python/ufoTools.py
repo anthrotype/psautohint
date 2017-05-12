@@ -307,6 +307,10 @@ try:
 except ImportError:
 	import xml.etree.ElementTree as ET
 
+from defcon import Font
+
+from pens.glyphToBez import GlyphToBezPen
+
 XML = ET.XML
 XMLElement = ET.Element
 xmlToString = ET.tostring
@@ -395,6 +399,9 @@ class UFOFontData:
 		self.deletedGlyph = False # track whether checkSkipGLyph has deleted a out of date glyph from the processed glyph layer
 		self.allowDecimalCoords = False # if true, do NOT round x,y values when processing.
 
+		self.font = Font(parentPath)
+		self.glyphSet = {glyph.name: glyph for glyph in self.font}
+
 	def getUnitsPerEm(self):
 		unitsPerEm = "1000"
 		if self.fontInfo == None:
@@ -427,10 +434,14 @@ class UFOFontData:
 		return hasHints
 
 	def convertToBez(self, glyphName, removeHints, beVerbose, doAll = 0):
-		# convertGLIFToBez does not yet support hints - no need for removeHints arg.
-		bezString, width = convertGLIFToBez(self, glyphName, beVerbose, doAll)
+		convertGLIFToBez(self, glyphName, beVerbose, doAll) # FIXME
+
+		glyph = self.glyphSet[glyphName]
+		pen = GlyphToBezPen(self.glyphSet, self.allowDecimalCoords)
+		glyph.draw(pen)
+		bezString = "%" + glyphName + "\n" + pen.getBezString()
 		hasHints = self.checkForHints(glyphName)
-		return bezString, width, hasHints
+		return bezString, glyph.width, hasHints
 
 	def updateFromBez(self, bezData, glyphName, width, beVerbose):
 		# For UFO font, we don't use the width parameter: it is carried over from the input glif file.
