@@ -8,7 +8,7 @@ os:
   - osx
 
 install:
-  - /usr/bin/python - m pip install -r requirements.txt
+  - /usr/bin/python -m pip install -r requirements.txt
 
 script:
   - make PYTHON=/usr/bin/python check
