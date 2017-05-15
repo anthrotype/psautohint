@@ -400,7 +400,6 @@ class UFOFontData:
 		self.allowDecimalCoords = False # if true, do NOT round x,y values when processing.
 
 		self.font = Font(parentPath)
-		self.glyphSet = {glyph.name: glyph for glyph in self.font}
 
 	def getUnitsPerEm(self):
 		unitsPerEm = "1000"
@@ -436,8 +435,8 @@ class UFOFontData:
 	def convertToBez(self, glyphName, removeHints, beVerbose, doAll = 0):
 		convertGLIFToBez(self, glyphName, beVerbose, doAll) # FIXME
 
-		glyph = self.glyphSet[glyphName]
-		pen = GlyphToBezPen(self.glyphSet, self.allowDecimalCoords)
+		glyph = self.font[glyphName]
+		pen = GlyphToBezPen(self.font, self.allowDecimalCoords)
 		glyph.draw(pen)
 		bezString = "%" + glyphName + "\n" + pen.getBezString()
 		hasHints = self.checkForHints(glyphName)
