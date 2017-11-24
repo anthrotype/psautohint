@@ -31,7 +31,7 @@ lib_sources = [
 ]
 
 cc = meson.get_compiler('c')
-math = cc.find_library('m')
+math = cc.find_library('m', required: false)
 
 libpsautohint_so = shared_library(
     'psautohint',
