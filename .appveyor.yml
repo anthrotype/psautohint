@@ -5,6 +5,7 @@ environment:
   global:
     TWINE_USERNAME: "adobe-type-tools-ci"
     # TWINE_PASSWORD is set in Appveyor settings
+    PYTHON3: "C:\\Python36-x64"
 
   matrix:
     - PYTHON: "C:\\Python27"
@@ -12,6 +13,7 @@ environment:
       PYTHON_ARCH: "32"
       TOXENV: "py27-cov"
       TOXPYTHON: "C:\\Python27\\python.exe"
+      ARCH: "x86"
 
     # - PYTHON: "C:\\Python36"
     #   PYTHON_VERSION: "3.6"
@@ -36,12 +38,14 @@ environment:
       PYTHON_ARCH: "64"
       TOXENV: "py36-cov"
       TOXPYTHON: "C:\\Python36-x64\\python.exe"
+      ARCH: "x64"
 
     - PYTHON: "C:\\Python37-x64"
       PYTHON_VERSION: "3.7"
       PYTHON_ARCH: "64"
       TOXENV: "py37-cov"
       TOXPYTHON: "C:\\Python37-x64\\python.exe"
+      ARCH: "x64"
 
 matrix:
   fast_finish: true
@@ -63,7 +67,7 @@ install:
 
   # install required python version if not present, and prepend to the PATH
   - ps: multibuild\install_python.ps1
-  - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+  - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%;%PYTHON3%\Scripts
 
   # check that we have the expected version and architecture for Python
   - python --version
@@ -75,6 +79,12 @@ install:
 
   # install tox
   - python -m pip install -r dev-requirements.txt
+
+  # install meson and ninja for autohintexe
+  - call %PYTHON3%\python.exe -m pip install meson ninja
+
+  # Put VS exectuable on the PATH
+  - call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
 
   # build psautohint wheel
   - tox -e wheel
