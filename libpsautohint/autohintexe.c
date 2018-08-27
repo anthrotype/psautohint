@@ -246,7 +246,7 @@ main(int argc, char* argv[])
                                       suffix of environment variable holding the
                                       bez string. */
 
-    int16_t total_files = 0;
+    int total_files = 0;
     int result, argi;
 
     badParam = false;
