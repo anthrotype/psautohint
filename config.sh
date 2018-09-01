@@ -10,13 +10,13 @@ function pre_build {
     # meson requires python3, append it to the PATH
     if $(python -c "import sys; sys.exit(not (sys.version_info[:2] < (3, 4)))"); then
         if [ -n "$IS_OSX" ]; then
-            get_macpython_environment 3.6 venv3
-            export PATH="$PATH:$(pwd)/venv3/bin"
+            command -v meson > /dev/null 2>&1 || brew install meson
+            command -v ninja > /dev/null 2>&1 || brew install ninja
         else
             export PATH="$PATH:$(cpython_path 3.6)/bin"
+            pip3 install meson ninja
         fi
     fi
-    pip3 install meson ninja
 }
 
 function run_tests {
