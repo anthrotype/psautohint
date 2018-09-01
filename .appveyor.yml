@@ -84,7 +84,7 @@ install:
   # we install meson from master because it includes a 'meson.exe' entry point
   # that makes it easier to run meson on Windows when installed via pip:
   # https://github.com/mesonbuild/meson/pull/4004
-  - %PYTHON3%\python.exe -m pip install git+https://github.com/mesonbuild/meson.git#egg=meson ninja
+  - call %PYTHON3%\python.exe -m pip install git+https://github.com/mesonbuild/meson.git#egg=meson ninja
 
   # Put VS exectuable on the PATH
   - call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
