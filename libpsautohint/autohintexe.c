@@ -7,7 +7,14 @@
  * This license is available at: http://opensource.org/licenses/Apache-2.0.
  */
 
+#if !defined(_MSC_VER) || _MSC_VER >= 1800
 #include <stdbool.h>
+#else
+typedef unsigned char bool;
+#define true 1
+#define false 0
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
