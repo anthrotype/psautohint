@@ -19,6 +19,8 @@
 typedef unsigned char bool;
 #define true 1
 #define false 0
+#define snprintf(buf, len, format, ...)                                        \
+    _snprintf_s(buf, len, len, format, __VA_ARGS__)
 #endif
 
 #include "psautohint.h"
